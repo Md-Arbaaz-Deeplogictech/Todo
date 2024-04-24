@@ -1,0 +1,9 @@
+{
+    "replication_node": true,
+    "syncRetries": 3,
+    "syncTimeout": 1000,
+    "logfile": "globalmemory.log.ndjson",
+    "startupWaitsForSync": true,
+    "partialSyncMaxWait": 5000,
+    "partialSyncCheckInterval": 100
+}

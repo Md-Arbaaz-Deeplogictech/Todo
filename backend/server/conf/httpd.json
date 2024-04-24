@@ -1,0 +1,19 @@
+{
+    "timeout": 120000,
+    "enableGZIPEncoding": true,
+    "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Expose-Headers": "*",
+        "Access-Control-Max-Age": 86400
+    },
+    "host": "{{{hostname}}}",
+    "port": 9090,
+    "ssl": false,
+    "forceHTTP1": false,
+    "sslKeyFile":"/path/to/certificate/key.pem",
+    "sslCertFile":"/path/to/certificate/cert.pem",
+    "ipblacklistRefresh": 5000,
+    "ipwhitelistRefresh": 5000
+}

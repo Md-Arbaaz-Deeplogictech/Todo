@@ -1,0 +1,164 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "Launch Frontend",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/frontend",
+            "runtimeArgs": ["--media-cache-size=1", "--disk-cache-size=1", "--preserve-symlinks"],
+            "smartStep": true,
+            "userDataDir": "${workspaceFolder}/.chrome",
+            "preLaunchTask": "Delete Chrome Profile",
+            "outFiles": ["${workspaceFolder}/frontend/**/*.js"]
+        },
+        {
+            "name": "Launch Frontend SSL",
+            "request": "launch",
+            "type": "chrome",
+            "url": "https://${input:GETIP}",
+            "webRoot": "${workspaceFolder}/frontend",
+            "runtimeArgs": ["--media-cache-size=1", "--disk-cache-size=1", "--preserve-symlinks", "--ignore-certificate-errors"],
+            "smartStep": true,
+            "userDataDir": "${workspaceFolder}/.chrome",
+            "preLaunchTask": "Delete Chrome Profile",
+            "outFiles": ["${workspaceFolder}/frontend/**/*.js"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch HTTPD",
+            "cwd": "${workspaceFolder}/frontend/server",
+            "program": "${workspaceFolder}/frontend/server/server.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/frontend/server/**/*.js"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch HTTPD Cluster",
+            "cwd": "${workspaceFolder}/frontend/server",
+            "program": "${workspaceFolder}/frontend/server/cluster.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/frontend/server/**/*.js"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch HTTPD - Second Server",
+            "cwd": "${workspaceFolder}/frontend/server",
+            "program": "${workspaceFolder}/frontend/server/server.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/frontend/server/**/*.js"],
+            "args": ["-c", "${workspaceFolder}/tests/frontend/secondserver/conf"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch HTTPD - Second Server - Standalone",
+            "cwd": "${workspaceFolder}/frontend/server",
+            "program": "${workspaceFolder}/frontend/server/server.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/frontend/server/**/*.js"],
+            "args": ["-c", "${workspaceFolder}/tests/frontend/secondserver/conf", "-standalone"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Backend",
+            "program": "${workspaceFolder}/backend/server/server.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/backend/**/*.js"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Backend Cluster",
+            "program": "${workspaceFolder}/backend/server/cluster.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/backend/**/*.js"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Backend - Second Server",
+            "program": "${workspaceFolder}/backend/server/server.js",
+            "runtimeArgs": ["--preserve-symlinks", "--trace-warnings"],
+            "outFiles": ["${workspaceFolder}/backend/**/*.js"],
+            "args": ["-c", "${workspaceFolder}/tests/backend/secondserver/conf"],
+            "env": {"NODE_TLS_REJECT_UNAUTHORIZED": "0"}
+        },
+        {
+            "name": "Launch Desktop App",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "preLaunchTask": "Delete Electron Cache",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            },
+            "args" : ["${workspaceFolder}/desktop/framework/main.js"],
+            "outputCapture": "std"
+        },
+        {
+            "name": "Build Desktop Native App",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/../xforge/xforge",
+            "args" : ["-c", "-f", "${workspaceFolder}/build/buildApp.xf.js"],
+            "outputCapture": "std"
+        },
+        {
+            "name": "Build Cachelists",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/../xforge/xforge",
+            "args" : ["-c", "-f", "${workspaceFolder}/build/genCacheableFilesList.xf.js"],
+            "outputCapture": "std"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch All - Backend, HTTPD and Frontend",
+            "configurations": ["Launch Backend", "Launch HTTPD", "Launch Frontend"],
+            "stopAll": true
+        },
+        {
+            "name": "Launch All - Backend, HTTPD and Frontend - SSL Support",
+            "configurations": ["Launch Backend", "Launch HTTPD", "Launch Frontend SSL"],
+            "stopAll": true,
+            "preLaunchTask": "Generate SSL Config"
+        },
+        {
+            "name": "Launch All - Backend, HTTPD and Frontend - SSL Support with Cluster",
+            "configurations": ["Launch Backend Cluster", "Launch HTTPD Cluster", "Launch Frontend SSL"],
+            "stopAll": true,
+            "preLaunchTask": "Generate SSL Config"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "GETIP",
+            "type": "command",
+            "command": "shellCommand.execute",
+                "args": {
+                "command": "${workspaceFolder}/build/getip.sh.bat",
+                "useFirstResult": "true"
+            }
+        }
+    ]
+}

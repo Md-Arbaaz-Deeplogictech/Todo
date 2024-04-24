@@ -1,0 +1,115 @@
+<!-- 
+(C) 2015 TekMonks. All rights reserved.
+License: See enclosed LICENSE file.
+The Monkshu Framework
+-->
+<!doctype html>
+<html>
+	
+<head>
+	<!-- Include the monkshu framework -->
+	<script type="text/javascript" src="/framework/js/$$.js"></script>
+    <link rel="stylesheet" href="index.css">
+	<title>Todo App</title>
+
+	<!-- Start the default app -->
+	<script type="module">
+		import {getDefaultRedirect} from "/framework/js/index.mjs";
+		const redirect = async _ => {
+			const defaultApp = await getDefaultRedirect();
+			if (defaultApp) window.location.href = defaultApp;
+		}
+		redirect();
+	</script>
+
+	<style>
+		::-webkit-scrollbar {
+			width: 0.5em !important;
+			height: 0.5em !important;
+			scroll-behavior: smooth !important;
+		}
+
+		::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
+			box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
+			margin: 5em;
+			border-radius: 1em !important;
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: darkgrey !important;
+			border-radius: 1em !important;
+			background-clip: padding-box;
+		}
+		body {font-family: sans-serif; margin:0;}
+		div#container{
+			display: flex;
+			flex-direction: row;
+			overflow: hidden;
+    		margin: 1em;
+		}
+		div#left {
+			width: 40%; 
+			display: flex;
+    		justify-content: space-around;
+		}
+		div#left > img {
+			width: 100%;
+			object-fit: contain;
+		}
+		div#right {
+			width: 60%; 
+			background-color: lightgray;
+			margin-left: 1em;
+		}
+		pre#release {padding: 1em;}
+
+		div#release {
+			overflow: auto;
+			font-family: monospace;
+			white-space: pre-wrap;
+		}
+		h1 {
+			margin: 2em 1em;
+			text-align: center;
+			color: darkred;
+		}
+	</style>
+</head>
+<body>
+	<!-- <div id="container">
+		<div id="left">
+			<img src="./framework/img/logo.png">
+		</div>
+
+		<div id="right">
+			<pre id="release">
+			<div id="release"></div>
+			</pre>
+		</div>
+	</div>
+
+	<h1>Monkshu is running, but not configured.</h1> -->
+    <div class="container">
+		<div class="to-do">
+			<h2>ToDo-App List</h2>
+			<div class="row">
+				<input type="text" id="input-box" placeholder="Add your Text">
+				<button>Add</button>
+			</div>
+			<ul id="list-container">
+				<!-- <li class="checked">Task 1</li>
+				<li>Task 2 </li>
+				<li>Task 3</li> -->
+			</ul>
+			
+		</div>
+	</div>
+
+	<script type="module">
+	import {getRelease} from "/framework/js/index.mjs";
+	const release = await getRelease();
+	document.querySelector("div#release").innerHTML = JSON.stringify(release, null, 4);
+	</script>
+</body>
+</html>
